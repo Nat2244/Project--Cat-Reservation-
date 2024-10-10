@@ -13,7 +13,7 @@
 		}
 		else{
 		//Display different text if a user is not logged in.
-		echo "<center><h3>Welcome to my Awesome Website!</h3></center>";
+		echo "<center><h3>Welcome to this Cat Cafe</h3></center>";
 				echo '<center><div>New user? Please <a href="login.php">Login</a> or <a href="register.php">Register</a>
 				</div></center>';
 		}
@@ -61,7 +61,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">My Awesome Website</a>
+					<a class="navbar-brand" href="#">Cat Cafe</a>
 				</div>
 
 			<div id="navbar" class="navbar-collapse collapse">
@@ -84,7 +84,7 @@
 		<section class="container" >
 			<div class="row">
 				<div class="col-md-9 content">
-					 <p class="text-justify">This is an educational open-source project. It is a dynamic website, built from scratch using PHP and MySQL. The main functionality of the website is to allow users to register and log in. When a user registers, the data is stored in the database. When a user tries to log in, the database is checked. In case of a match, the user logs in. The data of the website changes when a user is logged in. That is why this is a dynamic website. The website uses some very basic styling from Bootstrap. Bootstrap is a CSS and JavaScript framework for developing responsive, mobile first websites.</p>
+					 <p class="text-justify">this is a cat cafe where you can play with cats, yayyyyy</p>
 				</div>
 			</div>
 			
@@ -98,4 +98,3 @@
 	  
 	</body>
 	</html>
-	
