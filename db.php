@@ -2,7 +2,7 @@
 	$servername = "localhost";
 	$username = "root";
 	$password = "root";
-	$dbname = "cat_cafe_db";
+	$dbname = "cat_cafe";
 	// Create connection
 	$conn = mysqli_connect($servername, $username, $password, $dbname);
 	// Check connection
