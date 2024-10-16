@@ -17,6 +17,10 @@
 				echo '<center><div>New user? Please <a href="login.php">Login</a> or <a href="register.php">Register</a>
 				</div></center>';
 		}
+	
+	
+		
+	
 	?> 
 	<html>
 	<body>
