@@ -17,6 +17,7 @@
 				echo '<center><div>New user? Please <a href="login.php">Login</a> or <a href="register.php">Register</a>
 				</div></center>';
 		}
+		
 	
 	
 		
@@ -103,5 +104,7 @@
 		   <?php include 'footer.php'; ?>
 		</footer>
 	  
+		<img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSC4DtHTGprsp7K8u0ZlfSDmIDplvQYH5vniT0I3rpcl6wqBh8b" > 
+
 	</body>
 	</html>
