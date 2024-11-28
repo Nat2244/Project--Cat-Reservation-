@@ -20,6 +20,7 @@
 		
 	
 	
+
 		
 	
 	?> 
@@ -92,7 +93,7 @@
 		<section class="container" >
 			<div class="row">
 				<div class="col-md-9 content">
-					 <p class="text-justify">this is a cat cafe where you can play with cats, yayyyyy</p>
+					 <p class="text-justify"> Welcome!  </p>
 				</div>
 			</div>
 			
@@ -105,6 +106,10 @@
 		</footer>
 	  
 		<img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSC4DtHTGprsp7K8u0ZlfSDmIDplvQYH5vniT0I3rpcl6wqBh8b" > 
+		
+		
+
+
 
 	</body>
 	</html>
