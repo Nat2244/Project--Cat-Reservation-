@@ -90,7 +90,7 @@
 						     echo '
 						     <div class="col-md-4">
 							     <div class="product">
-								     <img src="hoodie.jpg' . $row['image_url'] . '" alt="' . $row['name'] . '" class="img-responsive">
+								     <img src="hoodie.jpg' . $row['hoodie.jpg'] . '" alt="' . $row['name'] . '" class="img-responsive">
 								     <h4>' . $row['name'] . '</h4>
 								     <p>' . $row['description'] . '</p>
 								     <p><strong>Price: $' . $row['price'] . '</strong></p>
