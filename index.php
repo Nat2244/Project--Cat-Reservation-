@@ -71,6 +71,41 @@
 			}
 			?>       
 			</div>
+
+<!--uploading images into database -->
+			<?php
+error_reporting(0);
+
+$msg = "";
+
+// If upload button is clicked ...
+if (isset($_POST['upload'])) {
+
+    $filename = $_FILES["uploadfile"]["name"];
+    $tempname = $_FILES["uploadfile"]["tmp_name"];
+    $folder = "./image/" . $filename;
+
+    $db = mysqli_connect("localhost", "root", "", "geeksforgeeks");
+
+    // Get all the submitted data from the form
+    $sql = "INSERT INTO image (filename) VALUES ('$filename')";
+
+    // Execute query
+    mysqli_query($db, $sql);
+
+    // Now let's move the uploaded image into the folder: image
+    if (move_uploaded_file($tempname, $folder)) {
+        echo "<h3>&nbsp; Image uploaded successfully!</h3>";
+    } else {
+        echo "<h3>&nbsp; Failed to upload image!</h3>";
+    }
+}
+?>
+
+
+
+
+			
 		</header>
 
 		<section class="container">
@@ -87,16 +122,18 @@
 					 $result = mysqli_query($conn, $sql);
 					 if (mysqli_num_rows($result) > 0) {
 					     while($row = mysqli_fetch_assoc($result)) {
-						     echo '
+						     echo 
 						     <div class="col-md-4">
 							     <div class="product">
-								     <img src="hoodie.jpg' . $row['hoodie.jpg'] . '" alt="' . $row['name'] . '" class="img-responsive">
-								     <h4>' . $row['name'] . '</h4>
+								 <img src="cat_hoodie.jpg" alt="Black Hoodie" class="img-responsive">
+								 <img src="images/<?php echo $product['image']; ?>" class="card-img-top" alt="<?php echo $product['name']; ?>">
+
+								     <h4>'$row['image']  . $row['name'] . '</h4>
 								     <p>' . $row['description'] . '</p>
 								     <p><strong>Price: $' . $row['price'] . '</strong></p>
 								     <a href="product_detail.php?id=' . $row['id'] . '" class="btn btn-primary">View Details</a>
 							     </div>
-						     </div>';
+						     </div>;
 					     }
 					 } else {
 					     echo "<p>No products found.</p>";

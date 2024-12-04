@@ -18,7 +18,9 @@
 	<a href="index.php">Home</a>
 	<a href="logout.php">Logout</a>
 	</div>
+	<p> Info about Cats </p>
 	
+
 	</body>
 	</html>
     

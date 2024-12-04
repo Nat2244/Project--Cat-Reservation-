@@ -1,42 +1,59 @@
 <?php
-require('db.php'); // Database connection
+
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['image'])) {
-    // Get the file info
-    $image = $_FILES['image'];
-    $name = $_POST['name'];
-    $description = $_POST['description'];
-    $price = $_POST['price'];
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php'); // Redirect to login if not authenticated
+    exit();
+}
 
-    // Check if the file was uploaded without errors
-    if ($image['error'] == 0) {
-        // Define the target directory to save images
-        $targetDir = "uploads/";
-        // Get the file extension of the uploaded image
-        $imageExtension = pathinfo($image['name'], PATHINFO_EXTENSION);
-        // Create a unique file name
-        $targetFile = $targetDir . uniqid() . '.' . $imageExtension;
+$user_id = $_SESSION['user_id'];
 
-        // Move the uploaded file to the target directory
-        if (move_uploaded_file($image['tmp_name'], $targetFile)) {
-            // Insert product data into the database
-            $sql = "INSERT INTO products (name, description, price, image_url) 
-                    VALUES (?, ?, ?, ?)";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-            if ($stmt = mysqli_prepare($conn, $sql)) {
-                mysqli_stmt_bind_param($stmt, 'ssds', $name, $description, $price, $targetFile);
-                if (mysqli_stmt_execute($stmt)) {
-                    echo "Product uploaded successfully!";
+// Handle image upload
+if (isset($_POST['upload'])) {
+    if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] == 0) {
+        // Get file details
+        $fileTmpPath = $_FILES['profile_image']['tmp_name'];
+        $fileName = $_FILES['profile_image']['name'];
+        $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        
+        // Allowed file types (images)
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+
+        if (in_array($fileExtension, $allowedExtensions)) {
+            // Generate a unique filename
+            $newFileName = uniqid() . '.' . $fileExtension;
+            $uploadFolder = 'uploads/';
+            $uploadPath = $uploadFolder . $newFileName;
+
+            // Move the file to the server's upload folder
+            if (move_uploaded_file($fileTmpPath, $uploadPath)) {
+                // Update profile image in the database
+                $sql = "UPDATE users SET profile_image='$newFileName' WHERE id='$user_id'";
+
+                if ($conn->query($sql) === TRUE) {
+                    echo "Profile image uploaded successfully!";
+                    header('Location: dashboard.php'); // Redirect to dashboard
                 } else {
-                    echo "Error uploading product: " . mysqli_error($conn);
+                    echo "Error updating profile image: " . $conn->error;
                 }
+            } else {
+                echo "Error uploading file.";
             }
         } else {
-            echo "Error moving uploaded file.";
+            echo "Invalid file type. Only images are allowed.";
         }
     } else {
-        echo "Error with file upload.";
+        echo "No file uploaded or error in file upload.";
     }
 }
+
+$conn->close();
 ?>
+
