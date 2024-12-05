@@ -85,7 +85,7 @@ if (isset($_POST['upload'])) {
     $tempname = $_FILES["uploadfile"]["tmp_name"];
     $folder = "./image/" . $filename;
 
-    $db = mysqli_connect("localhost", "root", "", "geeksforgeeks");
+    $db = mysqli_connect("localhost", "root", "root", "geeksforgeeks");
 
     // Get all the submitted data from the form
     $sql = "INSERT INTO image (filename) VALUES ('$filename')";
@@ -109,46 +109,49 @@ if (isset($_POST['upload'])) {
 		</header>
 
 		<section class="container">
-			<div class="row">
-				<div class="col-md-9 content">
-					 <p class="text-justify"> Welcome! </p>
+    <div class="row">
+        <div class="col-md-9 content">
+            <p class="text-justify"> Welcome! </p>
 
-					 <!-- Displaying Products from MySQL Database -->
-					 <h3>Our Products</h3>
-					 <div class="row">
-					 <?php
-					 // Fetch products from the database
-					 $sql = "SELECT * FROM products";
-					 $result = mysqli_query($conn, $sql);
-					 if (mysqli_num_rows($result) > 0) {
-					     while($row = mysqli_fetch_assoc($result)) {
-						     echo 
-						     <div class="col-md-4">
-							     <div class="product">
-								 <img src="cat_hoodie.jpg" alt="Black Hoodie" class="img-responsive">
-								 <img src="images/<?php echo $product['image']; ?>" class="card-img-top" alt="<?php echo $product['name']; ?>">
+            <!-- Displaying Products from MySQL Database -->
+			<div class="card" style="width: 18rem;">
+            <img src="hoodie.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+            
+         </div>
+     </div>
+            <h3>Our Products</h3>
+            <div class="row">
+            <?php
+            // Fetch products from the database
+            $sql = "SELECT * FROM products";
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result) > 0) {
+                while($row = mysqli_fetch_assoc($result)) {
+                    // Corrected echoing PHP variables inside HTML
+                    echo '<div class="col-md-4">';
+                    echo '<div class="product">';
+                    echo '<img src="images/' . $row['image'] . '" class="card-img-top" alt="' . $row['name'] . '">';
+                    echo '<h4>' . $row['name'] . '</h4>';
+                    echo '<p>' . $row['description'] . '</p>';
+                    echo '<p><strong>Price: $' . $row['price'] . '</strong></p>';
+                    echo '<a href="product_detail.php?id=' . $row['id'] . '" class="btn btn-primary">View Details</a>';
+                    echo '</div>';
+                    echo '</div>';
+                }
+            } else {
+                echo "<p>No products found.</p>";
+            }
+            ?>
+            </div>
+        </div>
+    </div>
+</section>
 
-								     <h4>'$row['image']  . $row['name'] . '</h4>
-								     <p>' . $row['description'] . '</p>
-								     <p><strong>Price: $' . $row['price'] . '</strong></p>
-								     <a href="product_detail.php?id=' . $row['id'] . '" class="btn btn-primary">View Details</a>
-							     </div>
-						     </div>;
-					     }
-					 } else {
-					     echo "<p>No products found.</p>";
-					 }
-					 ?>
-					 </div>
-				</div>
-			</div>
-		</section>
 
 		<footer class="container">
 			<?php include 'footer.php'; ?>
 		</footer>
-
-		<img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSC4DtHTGprsp7K8u0ZlfSDmIDplvQYH5vniT0I3rpcl6wqBh8b" alt="Cat Cafe Image">
 
 	</body>
 </html>
