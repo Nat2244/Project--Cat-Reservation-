@@ -21,27 +21,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Londrina+Sketch&family=Roboto+Slab:wght@100..900&family=Sixtyfour+Convergence&display=swap" rel="stylesheet">
 
-<!-- new code for image slider -->
-
-<div class="your-class">
-  <div>your content</div>
-  <div>your content</div>
-  <div>your content</div>
-</div>
-
-<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
-<!-- // Add the new slick-theme.css if you want the default styling -->
-<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
-
-<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script type="text/javascript" src="slick/slick.min.js"></script>
-
-$(document).ready(function(){
-  $('.your-class').slick({
-    setting-name: setting-value
-  });
-});
 
 
 
@@ -137,6 +116,56 @@ if (isset($_POST['upload'])) {
     <div class="row">
         <div class="col-md-9 content">
             <p class="text-justify">Welcome!</p>
+
+
+            <!-- code for displaying cat information  -->
+<?php
+include 'db.php'; // Include your database connection
+
+// Fetch cats from the database
+$query = "SELECT cat_id, name, image_url FROM cats";
+$result = mysqli_query($conn, $query);
+
+if (!$result) {
+    die("Query Failed: " . mysqli_error($conn));
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat List</title>
+    <style>
+        .cat-card {
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+        }
+        .cat-card img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <h1>Meet Our Cats</h1>
+    <div>
+        <?php while ($row = mysqli_fetch_assoc($result)): ?>
+            <div class="cat-card">
+                <h3><?php echo htmlspecialchars($row['name']); ?></h3>
+                <img src="<?php echo htmlspecialchars($row['image_url']); ?>" alt="<?php echo htmlspecialchars($row['name']); ?>">
+                <form action="cat_detail.php" method="GET">
+                    <input type="hidden" name="cat_id" value="<?php echo $row['cat_id']; ?>">
+                    <button type="submit">View Details</button>
+                </form>
+            </div>
+        <?php endwhile; ?>
+    </div>
+</body>
+</html>
+ <!-- code end for cat list -->
 
             <!-- Displaying Products from MySQL Database -->
             
