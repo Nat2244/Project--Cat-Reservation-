@@ -21,6 +21,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Londrina+Sketch&family=Roboto+Slab:wght@100..900&family=Sixtyfour+Convergence&display=swap" rel="stylesheet">
 
+<!-- new code for image slider -->
+
+<div class="your-class">
+  <div>your content</div>
+  <div>your content</div>
+  <div>your content</div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+<!-- // Add the new slick-theme.css if you want the default styling -->
+<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="slick/slick.min.js"></script>
+
+$(document).ready(function(){
+  $('.your-class').slick({
+    setting-name: setting-value
+  });
+});
+
+
+
+
 	<header>
 		<div class="container">
 			<h3>About This Project</h3>
@@ -156,9 +181,6 @@ if (isset($_POST['upload'])) {
 		<footer class="container">
 			<?php include 'footer.php'; ?>
 		</footer>
-
-
-
 
 
 
