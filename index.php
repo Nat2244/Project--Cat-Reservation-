@@ -1,83 +1,75 @@
 <?php
-	require('db.php');
-	include 'header.php';
-	//Check if a user is logged in or not
-	session_start();
-	if (isset($_SESSION['username'])){
-		$username = $_SESSION['username'];
-		//Display a message for logged-in users only
-		echo "<center><h3>Hello " . $username . "!</h3></center>";
-		echo "<center><div><p><a href='dashboard.php'> Dashboard</a><a href='logout.php'> Logout</a></p></div></center>";
-	} else {
-		//Display different text if a user is not logged in.
-		echo "<center><h3>Welcome to this Cat Cafe</h3></center>";
-		echo '<center><div>New user? Please <a href="login.php">Login</a> or <a href="register.php">Register</a></div></center>';
-	}
+// Start session and include necessary files
+session_start();
+require_once('db.php');
+include 'header.php';
+
+// Check if user is logged in
+$isLoggedIn = isset($_SESSION['username']);
+$username = $isLoggedIn ? $_SESSION['username'] : null;
+
 ?>
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Cafe</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+        }
+        .cat-card img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+</head>
 <body>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Londrina+Sketch&family=Roboto+Slab:wght@100..900&family=Sixtyfour+Convergence&display=swap" rel="stylesheet">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">Cat Cafe</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.php">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">Contact</a>
+                </li>
+                <?php if ($isLoggedIn): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.php">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Logout</a>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.php">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="register.php">Register</a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 
-
-
-
-	<header>
-		<div class="container">
-			<h3>About This Project</h3>
-
-			<?php
-			//If the user is logged-in
-			if (isset($_SESSION['username'])){
-				$username = $_SESSION['username'];
-				echo '
-				<nav class="navbar navbar-inverse navbar-fixed-top">
-					<div class="container">
-						<div class="navbar-header">
-							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-								<span class="sr-only">Toggle navigation</span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-							</button>
-							<a class="navbar-brand" href="#">My Awesome Website</a>
-						</div>
-					<div id="navbar" class="navbar-collapse collapse">
-						<ul class="nav navbar-nav navbar-right">
-							<li class="active"><a href="index.php">
-								<span class="glyphicon glyphicon-home"></span> Home</a></li>
-							<li><a href="#contact">Contact</a></li>
-							<li><a href="dashboard.php"> Dashboard</a></li>
-							<li><a href="logout.php"> Logout</a></li>';
-			} else {
-				echo '
-				<nav class="navbar navbar-inverse navbar-fixed-top">
-					<div class="container">
-						<div class="navbar-header">
-							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-								<span class="sr-only">Toggle navigation</span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-							</button>
-							<a class="navbar-brand" href="#">Cat Cafe</a>
-						</div>
-					<div id="navbar" class="navbar-collapse collapse">
-						<ul class="nav navbar-nav navbar-right">
-							<li class="active"><a href="index.php">
-								<span class="glyphicon glyphicon-home"></span> Home</a></li>
-							<li><a href="#contact">Contact</a></li>
-							<li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-							<li><a href="register.php"><span class="glyphicon glyphicon-user"></span> Register</a></li>';
-			}
-			?>       
-			</div>
 
 <!--uploading images into database -->
-			<?php
+<?php
 error_reporting(0);
 
 $msg = "";
@@ -117,7 +109,6 @@ if (isset($_POST['upload'])) {
         <div class="col-md-9 content">
             <p class="text-justify">Welcome!</p>
 
-
             <!-- code for displaying cat information  -->
 <?php
 include 'db.php'; // Include your database connection
@@ -149,6 +140,9 @@ if (!$result) {
         }
     </style>
 </head>
+
+
+
 <body>
     <h1>Meet Our Cats</h1>
     <div>
@@ -165,6 +159,14 @@ if (!$result) {
     </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
  <!-- code end for cat list -->
 
             <!-- Displaying Products from MySQL Database -->
@@ -363,6 +365,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip();
         });
+        
     </script>
 </body>
 </html>
