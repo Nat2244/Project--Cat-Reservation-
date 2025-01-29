@@ -110,7 +110,7 @@ if (isset($_POST['upload'])) {
             <p class="text-justify">Welcome!</p>
 
             <!-- code for displaying cat information  -->
-<?php
+            <?php
 include 'db.php'; // Include your database connection
 
 // Fetch cats from the database
@@ -128,20 +128,44 @@ if (!$result) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cat List</title>
     <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
         .cat-card {
             display: inline-block;
-            margin: 10px;
+            margin: 15px;
             text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            width: 220px;
+            background-color: #f8f8f8;
         }
         .cat-card img {
-            width: 200px;
+            width: 100%;
             height: 200px;
             object-fit: cover;
+            border-radius: 8px;
+        }
+        .cat-card h3 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .cat-card button {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .cat-card button:hover {
+            background-color: #218838;
         }
     </style>
 </head>
-
-
 
 <body>
     <h1>Meet Our Cats</h1>
@@ -149,7 +173,11 @@ if (!$result) {
         <?php while ($row = mysqli_fetch_assoc($result)): ?>
             <div class="cat-card">
                 <h3><?php echo htmlspecialchars($row['name']); ?></h3>
-                <img src="<?php echo htmlspecialchars($row['image_url']); ?>" alt="<?php echo htmlspecialchars($row['name']); ?>">
+                <?php
+                // Check if image_url exists and is not empty
+                $image_url = !empty($row['image_url']) ? $row['image_url'] : 'images/default_image.jpg';
+                ?>
+                <img src="<?php echo htmlspecialchars($image_url); ?>" alt="<?php echo htmlspecialchars($row['name']); ?>">
                 <form action="cat_detail.php" method="GET">
                     <input type="hidden" name="cat_id" value="<?php echo $row['cat_id']; ?>">
                     <button type="submit">View Details</button>
@@ -161,57 +189,57 @@ if (!$result) {
 </html>
 
 
-
-
-
-
-
-
  <!-- code end for cat list -->
 
             <!-- Displaying Products from MySQL Database -->
             
-                    <!-- Product card content goes here (but seems unnecessary in the first static card) -->
-                </div>
-            </div>
-            <h3>Our Products</h3>
-            <div class="row">
-                <?php
-                // Assuming you've already connected to the database
-                // Example: $conn = mysqli_connect("hostname", "username", "password", "database");
+            <section class="container">
+    <h3>Our Products</h3>
+    <div class="row">
+        <?php
+        // Assuming you've already connected to the database
+        // Example: $conn = mysqli_connect("hostname", "username", "password", "database");
 
-                // Fetch products from the database
-                $sql = "SELECT * FROM products";
-                $result = mysqli_query($conn, $sql);
-                if (mysqli_num_rows($result) > 0) {
-                    while($row = mysqli_fetch_assoc($result)) {
-                        // Corrected echoing PHP variables inside HTML
-                        echo '<div class="col-md-4 mb-4">';  // Add spacing between product cards
-                        echo '<div class="card" style="width: 18rem;">';  // Use card layout for product
-                        echo '<img src="images/' . $row['image'] . '" class="card-img-top" alt="' . $row['name'] . '">';
-                        echo '<div class="card-body">';
-                        echo '<h4 class="card-title">' . $row['name'] . '</h4>';
-                        echo '<p class="card-text">' . $row['description'] . '</p>';
-                        echo '<p><strong>Price: $' . $row['price'] . '</strong></p>';
-                        echo '<a href="product_detail.php?id=' . $row['id'] . '" class="btn btn-primary">View Details</a>';
-                        echo '</div>';  // Closing card-body
-                        echo '</div>';  // Closing card div
-                        echo '</div>';  // Closing col-md-4
-                    }
+        // Fetch products from the database
+        $sql = "SELECT * FROM products";
+        $result = mysqli_query($conn, $sql);
+
+        // Check if products are available
+        if (mysqli_num_rows($result) > 0) {
+            // Loop through each product and display it
+            while($row = mysqli_fetch_assoc($result)) {
+                echo '<div class="col-md-4 mb-4">';  // Add spacing between product cards
+                echo '<div class="card" style="width: 18rem;">';  // Use card layout for product
+                
+                // Ensure image exists and is correctly loaded
+                $image_path = "images/" . $row['image'];  // Assuming the image file path is stored in 'image' column
+                if (file_exists($image_path)) {
+                    echo '<img src="' . $image_path . '" class="card-img-top" alt="' . htmlspecialchars($row['name']) . '">';
                 } else {
-                    echo "<p>No products found.</p>";
+                    echo '<img src="images/default.jpg" class="card-img-top" alt="Default image">';  // Default image if not found
                 }
-                ?>
-            </div>
-        </div>
-    </div>
+                
+                // Display product details
+                echo '<div class="card-body">';
+                echo '<h4 class="card-title">' . htmlspecialchars($row['name']) . '</h4>';
+                echo '<p class="card-text">' . htmlspecialchars($row['description']) . '</p>';
+                echo '<p><strong>Price: $' . htmlspecialchars($row['price']) . '</strong></p>';
+                echo '<a href="product_detail.php?id=' . $row['id'] . '" class="btn btn-primary">View Details</a>';
+                echo '</div>';  // Closing card-body
+                echo '</div>';  // Closing card div
+                echo '</div>';  // Closing col-md-4
+            }
+        } else {
+            echo "<p>No products found.</p>";
+        }
+        ?>
+    </div>  <!-- Closing row -->
 </section>
 
+<footer class="container">
+    <?php include 'footer.php'; ?>
+</footer>
 
-
-		<footer class="container">
-			<?php include 'footer.php'; ?>
-		</footer>
 
 
 
@@ -221,7 +249,7 @@ if (!$result) {
 
 		<?php
 // Include database connection file
-include('db_connect.php');
+include('db.php');
 
 // Handle reservation form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reserve'])) {

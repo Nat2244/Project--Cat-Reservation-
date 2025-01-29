@@ -1,12 +1,10 @@
 <?php
 // Include your database connection file
-include 'db_connect.php'; // Update with your actual DB connection file
+include 'db.php';
 
-// Define a function to log errors
-function log_error($error_message) {
-    $log_file = 'error_log.txt'; // File to store errors
-    $current_time = date('Y-m-d H:i:s');
-    file_put_contents($log_file, "[$current_time] $error_message\n", FILE_APPEND);
+// Check if the database connection is working
+if (!isset($conn) || $conn->connect_error) {
+    die("Database connection failed: " . $conn->connect_error);
 }
 
 // Check if the 'id' is passed via the URL
@@ -15,29 +13,34 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
     // Validate and sanitize the input
     if (!filter_var($product_id, FILTER_VALIDATE_INT)) {
-        log_error("Invalid product ID: $product_id");
-        header("Location: error.php?message=Invalid product ID");
+        echo "<p>Invalid product ID.</p>";
         exit;
     }
 
-    // Prepared statement to prevent SQL injection
+    // Prepared statement to fetch product details
     $sql = "SELECT * FROM products WHERE id = ?";
     $stmt = $conn->prepare($sql);
+    
+    if (!$stmt) {
+        die("Database error: " . $conn->error);
+    }
+
     $stmt->bind_param("i", $product_id);
     $stmt->execute();
     $result = $stmt->get_result();
 
     // Check if the product exists
     if ($result->num_rows > 0) {
+        // Fetch the product details
         $product = $result->fetch_assoc();
     } else {
-        log_error("Product not found for ID: $product_id");
-        header("Location: error.php?message=Product not found");
+        echo "<p>Product not found.</p>";
         exit;
     }
+
+    $stmt->close();
 } else {
-    log_error("Product ID not provided");
-    header("Location: error.php?message=Product ID not provided");
+    echo "<p>Invalid product ID.</p>";
     exit;
 }
 ?>
@@ -55,25 +58,39 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
         <div class="row">
             <div class="col-md-6">
                 <!-- Display product image -->
-                <img src="images/<?php echo htmlspecialchars(isset($product['image']) ? $product['image'] : 'default.png'); ?>" 
- 
+                <img src="images/<?php echo isset($product['image']) ? htmlspecialchars($product['image']) : 'default.png'; ?>" 
                      class="img-fluid" 
-                     alt="<?php echo htmlspecialchars($product['name']); ?>">
+                     alt="<?php echo isset($product['name']) ? htmlspecialchars($product['name']) : 'No name available'; ?>">
             </div>
             <div class="col-md-6">
                 <!-- Display product details -->
-                <h2><?php echo htmlspecialchars($product['name']); ?></h2>
-                <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($product['description'] ?? 'No description available.')); ?></p>
-                <p><strong>Price:</strong> $<?php echo number_format($product['price'] ?? 0, 2); ?></p>
+                <h2><?php echo isset($product['name']) ? htmlspecialchars($product['name']) : 'No name available'; ?></h2>
+                <p><strong>Description:</strong> 
+                    <?php echo isset($product['description']) ? nl2br(htmlspecialchars($product['description'])) : 'No description available.'; ?>
+                </p>
+                <p><strong>Price:</strong> $<?php echo isset($product['price']) ? number_format($product['price'], 2) : '0.00'; ?></p>
                 
-                <a href="cart.php?add=<?php echo $product['id']; ?>" class="btn btn-primary">Add to Cart</a>
+                <!-- Add to cart button -->
+                <a href="cart.php?add=<?php echo isset($product['id']) ? $product['id'] : ''; ?>" class="btn btn-primary">Add to Cart</a>
             </div>
         </div>
         <a href="index.php" class="btn btn-secondary mt-3">Back to Products</a>
     </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+  
+
+
 </body>
 </html>
 
 <?php
+// Close the database connection
 $conn->close();
 ?>
