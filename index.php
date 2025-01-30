@@ -107,7 +107,10 @@ if (isset($_POST['upload'])) {
 		<section class="container">
     <div class="row">
         <div class="col-md-9 content">
-            <p class="text-justify">Welcome!</p>
+        <h1 style="text-align: center; width: 100%;">Welcome to our Cat Cafe!</h1>
+        <h2> We are a friendly Cat Cafe, offering their visitors a comfortable place, and an atmosphere like home to ensure best experience. </h2>
+
+
 
             <!-- code for displaying cat information  -->
             <?php
@@ -168,7 +171,7 @@ if (!$result) {
 </head>
 
 <body>
-    <h1>Meet Our Cats</h1>
+<h1 style="text-align: center; width: 100%;">Meet our cats</h1>
     <div>
         <?php while ($row = mysqli_fetch_assoc($result)): ?>
             <div class="cat-card">
