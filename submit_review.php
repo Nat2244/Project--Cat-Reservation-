@@ -1,26 +1,45 @@
 <?php
+// Include the database connection file
+include 'db.php';
 session_start();
-require_once('db.php');
 
+// Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
+    echo "You must be logged in to submit a review.";
+    exit;
 }
 
-$user_id = $_SESSION['user_id'];
-$product_id = $_POST['product_id'];
-$rating = $_POST['rating'];
-$review_text = trim($_POST['review_text']);
+// Check if the form is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $product_id = $_POST['product_id'];
+    $rating = $_POST['rating'];
+    $review_text = $_POST['review_text'];
+    $user_id = $_SESSION['user_id']; // Assuming user_id is stored in session after login
 
-// Prevent SQL Injection
-$insert_query = "INSERT INTO reviews (product_id, user_id, rating, review_text) VALUES (?, ?, ?, ?)";
-$stmt = mysqli_prepare($conn, $insert_query);
-mysqli_stmt_bind_param($stmt, "iiis", $product_id, $user_id, $rating, $review_text);
+    // Sanitize inputs
+    $rating = filter_var($rating, FILTER_VALIDATE_INT);
+    $review_text = htmlspecialchars(trim($review_text));
 
-if (mysqli_stmt_execute($stmt)) {
-    header("Location: product_detail.php?product_id=" . $product_id);
-    exit();
-} else {
-    die("Error: " . mysqli_error($conn));
+    if ($rating && !empty($review_text)) {
+        // Prepared statement to insert the review into the database
+        $sql = "INSERT INTO reviews (product_id, user_id, rating, review_text, created_at) 
+                VALUES (?, ?, ?, ?, NOW())";
+
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("iiis", $product_id, $user_id, $rating, $review_text);
+            if ($stmt->execute()) {
+                echo "Review submitted successfully!";
+                header("Location: product_detail.php?id=" . $product_id); // Redirect to the product page
+                exit;
+            } else {
+                echo "Error submitting review.";
+            }
+            $stmt->close();
+        } else {
+            echo "Error preparing the statement.";
+        }
+    } else {
+        echo "Invalid review data.";
+    }
 }
 ?>
