@@ -150,5 +150,59 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <h1>Thank You for Making a Reservation!</h1>
         <p>We appreciate your booking and look forward to seeing you soon.</p>
     </div>
+
+
+
+    <?php
+// Don't call session_start() here if it's already called in another file like header.php
+// session_start(); // Remove this line
+
+require_once('db.php'); // Include your database connection file
+
+// Check if the form is submitted
+if (isset($_POST['submit'])) {
+    // Get the form data
+    $user_name = mysqli_real_escape_string($conn, $_POST['user_name']);
+    $reservation_date = mysqli_real_escape_string($conn, $_POST['reservation_date']);
+    $reservation_time = mysqli_real_escape_string($conn, $_POST['reservation_time']);
+    
+    // Insert data into the reservations table
+    $query = "INSERT INTO reservations (user_name, reservation_date, reservation_time) 
+              VALUES ('$user_name', '$reservation_date', '$reservation_time')";
+    
+    if (mysqli_query($conn, $query)) {
+        // Reservation successful
+        $message = "Reservation successfully made!";
+    } else {
+        // Error occurred
+        $message = "Error: " . mysqli_error($conn);
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Confirmation</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- Confirmation Message -->
+    <div class="container my-5">
+        <?php if (isset($message)): ?>
+            <div class="alert alert-info"><?php echo $message; ?></div>
+        <?php endif; ?>
+        <a href="index.php" class="btn btn-warning">Go Back to Home</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
 </body>
 </html>

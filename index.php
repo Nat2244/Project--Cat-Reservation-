@@ -75,6 +75,11 @@ $username = $isLoggedIn ? $_SESSION['username'] : null;
 
 <!-- Navbar -->
 <?php
+
+// Simulating login status (Replace with your actual authentication logic)
+$isLoggedIn = isset($_SESSION['user_id']); 
+
+// Get current page filename for active link highlighting
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
 
@@ -95,6 +100,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <li class="nav-item">
                     <a class="nav-link <?php echo ($current_page == 'contact.php') ? 'active' : ''; ?>" href="contact.php">Contact</a>
                 </li>
+
                 <?php if ($isLoggedIn): ?>
                     <li class="nav-item">
                         <a class="nav-link <?php echo ($current_page == 'dashboard.php') ? 'active' : ''; ?>" href="dashboard.php">Dashboard</a>
@@ -118,6 +124,59 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </div>
 </nav>
 
+<style>
+/* Navbar Hover Effects */
+.navbar-nav .nav-link {
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff !important;
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffc107 !important;
+    transform: scale(1.05);
+}
+
+.navbar-nav .nav-link.active {
+    color: #ffc107 !important;
+    font-weight: 600;
+    border-bottom: 2px solid #ffc107;
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    background-color: #343a40;
+    border: none;
+    border-radius: 10px;
+}
+
+.dropdown-menu .dropdown-item {
+    color: white;
+    transition: background 0.3s;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #495057;
+    color: #ffc107;
+}
+
+/* Enable Hover Effect for Dropdown */
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Logout Button Hover */
+.logout-hover:hover {
+    color: #dc3545 !important;
+    font-weight: bold;
+}
+
+
+</style>
+
+<!-- Bootstrap 5 JS (Include at the end of the body) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Cat Listing Section -->
 <h1 class="text-center my-5">Meet our Cats</h1>
