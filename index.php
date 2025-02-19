@@ -2,14 +2,14 @@
 // Start session and include necessary files
 session_start();
 require_once('db.php');
-include 'header.php';
+include 'header.php'; // Assuming header.php is included once at the top
 
 // Check if user is logged in
 $isLoggedIn = isset($_SESSION['username']);
 $username = $isLoggedIn ? $_SESSION['username'] : null;
 
+// Include Bootstrap once
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,10 +22,52 @@ $username = $isLoggedIn ? $_SESSION['username'] : null;
         body {
             font-family: 'Kanit', sans-serif;
         }
-        .cat-card img {
-            width: 200px;
+        .cat-card, .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .cat-card:hover, .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .cat-card img, .product-card img {
+            width: 100%;
             height: 200px;
             object-fit: cover;
+        }
+        .cat-card, .product-card {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        .cat-card h3, .product-card h4 {
+            font-weight: 700;
+            color: #333;
+        }
+        .cat-card p, .product-card p {
+            color: #777;
+        }
+        .product-card .btn-primary {
+            background-color: #ffc107;
+            border: none;
+        }
+        .navbar-nav .nav-link {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #ffc107 !important;
+        }
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 20px 0;
+        }
+        .footer a {
+            color: #ffc107;
+        }
+        .footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -33,11 +75,6 @@ $username = $isLoggedIn ? $_SESSION['username'] : null;
 
 <!-- Navbar -->
 <?php
-
-// Simulating login status (Replace with your actual authentication logic)
-$isLoggedIn = isset($_SESSION['user_id']); 
-
-// Get current page filename for active link highlighting
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
 
@@ -58,7 +95,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <li class="nav-item">
                     <a class="nav-link <?php echo ($current_page == 'contact.php') ? 'active' : ''; ?>" href="contact.php">Contact</a>
                 </li>
-
                 <?php if ($isLoggedIn): ?>
                     <li class="nav-item">
                         <a class="nav-link <?php echo ($current_page == 'dashboard.php') ? 'active' : ''; ?>" href="dashboard.php">Dashboard</a>
@@ -82,398 +118,117 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </div>
 </nav>
 
-<style>
-/* Navbar Hover Effects */
-.navbar-nav .nav-link {
-    font-size: 16px;
-    font-weight: 500;
-    color: #fff !important;
-    transition: all 0.3s ease-in-out;
-}
 
-.navbar-nav .nav-link:hover {
-    color: #ffc107 !important;
-    transform: scale(1.05);
-}
-
-.navbar-nav .nav-link.active {
-    color: #ffc107 !important;
-    font-weight: 600;
-    border-bottom: 2px solid #ffc107;
-}
-
-/* Dropdown Menu Styling */
-.dropdown-menu {
-    background-color: #343a40;
-    border: none;
-    border-radius: 10px;
-}
-
-.dropdown-menu .dropdown-item {
-    color: white;
-    transition: background 0.3s;
-}
-
-.dropdown-menu .dropdown-item:hover {
-    background-color: #495057;
-    color: #ffc107;
-}
-
-/* Enable Hover Effect for Dropdown */
-.nav-item.dropdown:hover .dropdown-menu {
-    display: block;
-}
-
-/* Logout Button Hover */
-.logout-hover:hover {
-    color: #dc3545 !important;
-    font-weight: bold;
-}
-</style>
-
-<!-- Bootstrap 5 JS (Include at the end of the body) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
-
-
-<!--uploading images into database -->
-<?php
-error_reporting(0);
-
-$msg = "";
-
-// If upload button is clicked ...
-if (isset($_POST['upload'])) {
-
-    $filename = $_FILES["uploadfile"]["name"];
-    $tempname = $_FILES["uploadfile"]["tmp_name"];
-    $folder = "./image/" . $filename;
-
-    $db = mysqli_connect("localhost", "root", "root", "geeksforgeeks");
-
-    // Get all the submitted data from the form
-    $sql = "INSERT INTO image (filename) VALUES ('$filename')";
-
-    // Execute query
-    mysqli_query($db, $sql);
-
-    // Now let's move the uploaded image into the folder: image
-    if (move_uploaded_file($tempname, $folder)) {
-        echo "<h3>&nbsp; Image uploaded successfully!</h3>";
-    } else {
-        echo "<h3>&nbsp; Failed to upload image!</h3>";
-    }
-}
-?>
-
-
-
-
-			
-		</header>
-
-		<section class="container">
-    <div class="row">
-        <div class="col-md-9 content">
-        <h1 style="text-align: center; width: 100%;">Welcome to our Cat Cafe!</h1>
-        <h2> We are a friendly Cat Cafe, offering their visitors a comfortable place, and an atmosphere like home to ensure best experience. </h2>
-
-
-
-            <!-- code for displaying cat information  -->
-            <?php
-include 'db.php'; // Include your database connection
-
-// Fetch cats from the database
-$query = "SELECT cat_id, name, image_url FROM cats";
-$result = mysqli_query($conn, $query);
-
-if (!$result) {
-    die("Query Failed: " . mysqli_error($conn));
-}
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cat List</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            padding: 20px;
-        }
-        .cat-card {
-            display: inline-block;
-            margin: 15px;
-            text-align: center;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            width: 220px;
-            background-color: #f8f8f8;
-        }
-        .cat-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-        .cat-card h3 {
-            font-size: 18px;
-            margin: 10px 0;
-        }
-        .cat-card button {
-            background-color: #28a745;
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-        .cat-card button:hover {
-            background-color: #218838;
-        }
-    </style>
-</head>
-
-<body>
-<h1 style="text-align: center; width: 100%;">Meet our cats</h1>
-    <div>
-        <?php while ($row = mysqli_fetch_assoc($result)): ?>
-            <div class="cat-card">
-                <h3><?php echo htmlspecialchars($row['name']); ?></h3>
-                <?php
-                // Check if image_url exists and is not empty
-                $image_url = !empty($row['image_url']) ? $row['image_url'] : 'images/default_image.jpg';
-                ?>
-                <img src="<?php echo htmlspecialchars($image_url); ?>" alt="<?php echo htmlspecialchars($row['name']); ?>">
-                <form action="cat_detail.php" method="GET">
-                    <input type="hidden" name="cat_id" value="<?php echo $row['cat_id']; ?>">
-                    <button type="submit">View Details</button>
-                </form>
-            </div>
-        <?php endwhile; ?>
-    </div>
-</body>
-</html>
-
-
- <!-- code end for cat list -->
-
-            <!-- Displaying Products from MySQL Database -->
-            
-            <section class="container">
-    <h3>Our Products</h3>
-    <div class="row">
+<!-- Cat Listing Section -->
+<h1 class="text-center my-5">Meet our Cats</h1>
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
         <?php
-        // Assuming you've already connected to the database
-        // Example: $conn = mysqli_connect("hostname", "username", "password", "database");
-
-        // Fetch products from the database
-        $sql = "SELECT * FROM products";
-        $result = mysqli_query($conn, $sql);
-
-        // Check if products are available
-        if (mysqli_num_rows($result) > 0) {
-            // Loop through each product and display it
-            while($row = mysqli_fetch_assoc($result)) {
-                echo '<div class="col-md-4 mb-4">';  // Add spacing between product cards
-                echo '<div class="card" style="width: 18rem;">';  // Use card layout for product
-                
-                // Ensure image exists and is correctly loaded
-                $image_path = "images/" . $row['image'];  // Assuming the image file path is stored in 'image' column
-                if (file_exists($image_path)) {
-                    echo '<img src="' . $image_path . '" class="card-img-top" alt="' . htmlspecialchars($row['name']) . '">';
-                } else {
-                    echo '<img src="images/default.jpg" class="card-img-top" alt="Default image">';  // Default image if not found
-                }
-                
-                // Display product details
-                echo '<div class="card-body">';
-                echo '<h4 class="card-title">' . htmlspecialchars($row['name']) . '</h4>';
-                echo '<p class="card-text">' . htmlspecialchars($row['description']) . '</p>';
-                echo '<p><strong>Price: $' . htmlspecialchars($row['price']) . '</strong></p>';
-                echo '<a href="product_detail.php?id=' . $row['id'] . '" class="btn btn-primary">View Details</a>';
-                echo '</div>';  // Closing card-body
-                echo '</div>';  // Closing card div
-                echo '</div>';  // Closing col-md-4
-            }
+        $query = "SELECT cat_id, name, image_url FROM cats";
+        $result = mysqli_query($conn, $query);
+        if ($result) {
+            while ($row = mysqli_fetch_assoc($result)): ?>
+                <div class="col">
+                    <div class="card cat-card shadow-sm">
+                        <?php
+                        // Check if the image_url is not empty and use it, otherwise fallback to default image
+                        $imageSrc = !empty($row['image_url']) ? 'images/' . htmlspecialchars($row['image_url']) : 'images/default_image.jpg';
+                        ?>
+                        <img src="<?php echo $imageSrc; ?>" alt="Cat Image" class="card-img-top" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h3 class="card-title text-center"><?php echo htmlspecialchars($row['name']); ?></h3>
+                            <div class="text-center">
+                                <form action="cat_detail.php" method="GET">
+                                    <input type="hidden" name="cat_id" value="<?php echo $row['cat_id']; ?>">
+                                    <button type="submit" class="btn btn-warning btn-block mt-3">View Details</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endwhile;
         } else {
-            echo "<p>No products found.</p>";
+            echo "<p class='col-12 text-center'>No cats found!</p>";
         }
         ?>
-    </div>  <!-- Closing row -->
-</section>
-
-<footer class="container">
-    <?php include 'footer.php'; ?>
-</footer>
-
-
-
-
-
-		<!--  calnendar for reservation -->
-
-
-		<?php
-// Include database connection file
-include('db.php');
-
-// Handle reservation form submission
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reserve'])) {
-    $user_name = mysqli_real_escape_string($conn, $_POST['user_name']);
-    $reservation_date = mysqli_real_escape_string($conn, $_POST['reservation_date']);
-    $reservation_time = mysqli_real_escape_string($conn, $_POST['reservation_time']);
-
-    $sql = "INSERT INTO reservations (user_name, reservation_date, reservation_time) VALUES ('$user_name', '$reservation_date', '$reservation_time')";
-    if (mysqli_query($conn, $sql)) {
-        echo "<p>Reservation successful!</p>";
-    } else {
-        echo "<p>Error: " . mysqli_error($conn) . "</p>";
-    }
-}
-
-// Get current date for calendar view
-$current_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
-$month = date('m', strtotime($current_date));
-$year = date('Y', strtotime($current_date));
-
-// Get reservations for the current month
-$reservations = [];
-$sql = "SELECT * FROM reservations WHERE MONTH(reservation_date) = '$month' AND YEAR(reservation_date) = '$year'";
-$result = mysqli_query($conn, $sql);
-while ($row = mysqli_fetch_assoc($result)) {
-    $reservations[$row['reservation_date']][] = $row['reservation_time'];
-}
-
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cat Cafe Reservation</title>
-    <!-- Add Bootstrap CSS for styling -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .calendar-table td {
-            height: 80px;
-            width: 80px;
-            text-align: center;
-            vertical-align: top;
-            cursor: pointer;
-        }
-        .reserved {
-            background-color: #f8d7da;
-        }
-    </style>
-</head>
-<body>
-    <div class="container mt-5">
-        <h2>Cat Cafe Reservation Calendar</h2>
-        
-        <!-- Calendar navigation (Previous & Next month) -->
-        <div class="mb-3">
-            <a href="calendar.php?date=<?php echo date('Y-m-d', strtotime('-1 month', strtotime($current_date))); ?>" class="btn btn-secondary">Previous</a>
-            <span class="ml-3"><?php echo date('F Y', strtotime($current_date)); ?></span>
-            <a href="calendar.php?date=<?php echo date('Y-m-d', strtotime('+1 month', strtotime($current_date))); ?>" class="btn btn-secondary ml-3">Next</a>
-        </div>
-
-        <!-- Display the calendar -->
-        <table class="calendar-table table table-bordered">
-            <thead>
-                <tr>
-                    <th>Sun</th>
-                    <th>Mon</th>
-                    <th>Tue</th>
-                    <th>Wed</th>
-                    <th>Thu</th>
-                    <th>Fri</th>
-                    <th>Sat</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                // Create the calendar for the current month
-                $first_day_of_month = strtotime("$year-$month-01");
-                $last_day_of_month = strtotime("$year-$month-" . date('t', $first_day_of_month));
-
-                $first_weekday = date('w', $first_day_of_month); // Day of the week the month starts on
-                $days_in_month = date('t', $first_day_of_month); // Number of days in the month
-
-                $day_counter = 1;
-                $calendar_html = '';
-                
-                for ($week = 0; $week < 6; $week++) { // max 6 rows for a calendar
-                    $calendar_html .= '<tr>';
-
-                    for ($day = 0; $day < 7; $day++) {
-                        // Skip empty cells before the first day of the month
-                        if (($week == 0 && $day < $first_weekday) || $day_counter > $days_in_month) {
-                            $calendar_html .= '<td></td>';
-                        } else {
-                            $date_str = "$year-$month-" . str_pad($day_counter, 2, '0', STR_PAD_LEFT);
-                            $is_reserved = isset($reservations[$date_str]);
-                            $reserved_class = $is_reserved ? 'reserved' : '';
-
-                            $calendar_html .= "<td class='$reserved_class' data-toggle='tooltip' title='Click to reserve' data-date='$date_str'>$day_counter</td>";
-                            $day_counter++;
-                        }
-                    }
-
-                    $calendar_html .= '</tr>';
-                }
-
-                echo $calendar_html;
-                ?>
-            </tbody>
-        </table>
-
-        <!-- Reservation form -->
-        <div class="mt-5">
-            <h3>Make a Reservation</h3>
-            <form action="calendar.php" method="POST">
-                <div class="form-group">
-                    <label for="user_name">Your Name</label>
-                    <input type="text" class="form-control" id="user_name" name="user_name" required>
-                </div>
-                <div class="form-group">
-                    <label for="reservation_date">Reservation Date</label>
-                    <input type="date" class="form-control" id="reservation_date" name="reservation_date" required>
-                </div>
-                <div class="form-group">
-                    <label for="reservation_time">Reservation Time</label>
-                    <input type="time" class="form-control" id="reservation_time" name="reservation_time" required>
-                </div>
-                <button type="submit" name="reserve" class="btn btn-primary">Reserve</button>
-            </form>
-        </div>
     </div>
+</div>
 
-    <!-- Add Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Tooltip functionality for the calendar -->
-    <script>
-        $(document).ready(function() {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-        
-    </script>
+
+<!-- Products Section -->
+<h3 class="text-center my-5">Our Products</h3>
+<div class="container">
+    <div class="row">
+        <?php
+        $sql = "SELECT * FROM products";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            while($row = mysqli_fetch_assoc($result)) {
+                echo '<div class="col-md-4 mb-4">';
+                echo '<div class="product-card card shadow">';
+                // Added class for resizing images
+                echo '<img src="images/' . $row['image'] . '" class="card-img-top product-img" alt="' . htmlspecialchars($row['name']) . '">';
+                echo '<div class="card-body">';
+                echo '<h4 class="card-title text-center">' . htmlspecialchars($row['name']) . '</h4>';
+                echo '<p class="card-text">' . htmlspecialchars($row['description']) . '</p>';
+                echo '<p><strong>Price: $' . htmlspecialchars($row['price']) . '</strong></p>';
+                echo '<a href="product_detail.php?id=' . $row['id'] . '" class="btn btn-primary btn-block">View Details</a>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+            }
+        } else {
+            echo "<p class='col-12 text-center'>No products found.</p>";
+        }
+        ?>
+    </div>
+</div>
+
+<!-- Add custom CSS for resizing the images -->
+<style>
+    .product-img {
+        height: 200px;
+        object-fit: cover;
+    }
+</style>
+
+
+
+<!-- Reservation Section -->
+<h2 class="text-center my-5">Make a Reservation</h2>
+<div class="container">
+    <form action="calendar.php" method="POST" class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="user_name">Your Name</label>
+                <input type="text" class="form-control" id="user_name" name="user_name" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="reservation_date">Reservation Date</label>
+                <input type="date" class="form-control" id="reservation_date" name="reservation_date" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="reservation_time">Reservation Time</label>
+                <input type="time" class="form-control" id="reservation_time" name="reservation_time" required>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex align-items-end">
+            <button type="submit" name="submit" class="btn btn-warning btn-block w-100">Reserve</button>
+        </div>
+    </form>
+</div>
+
+<!-- Footer -->
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
-</html>
-
-<?php
-// Close database connection
-mysqli_close($conn);
-?>
-
-	</body>
 </html>

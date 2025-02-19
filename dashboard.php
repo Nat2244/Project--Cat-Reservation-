@@ -25,6 +25,9 @@ $user_id = $_SESSION['user_id'];
 $success = '';
 $error = '';
 
+
+
+
 // If the form is submitted to upload a new profile picture
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
     $file = $_FILES['profile_picture'];
