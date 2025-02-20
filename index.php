@@ -178,6 +178,44 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <!-- Bootstrap 5 JS (Include at the end of the body) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled Text</title>
+    
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Sigmar&display=swap" rel="stylesheet">
+    
+    <style>
+        .sigmar-regular {
+            font-family: "Sigmar", serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
+</head>
+<body>
+
+    <?php
+        // Define text in PHP
+        $text = "This text will have the Sigmar font.";
+    ?>
+
+    <!-- Apply the font to this text only -->
+    <p class="sigmar-regular"><?php echo htmlspecialchars($text); ?></p>
+
+</body>
+</html>
+
+
+
+<h1 class="text-center my-5">Welcome to our Cat Cafe Sleepy Claws!</h1> <break>
+
+
+<h1 class="text-center my-5">About us</h1>
+
 <!-- Cat Listing Section -->
 <h1 class="text-center my-5">Meet our Cats</h1>
 <div class="container">
