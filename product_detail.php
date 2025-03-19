@@ -82,7 +82,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- New code to fetch reviews and display -->
+    <!-- code to fetch reviews and display -->
     <?php
     session_start();
     require_once('db.php');

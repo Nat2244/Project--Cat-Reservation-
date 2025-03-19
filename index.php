@@ -183,31 +183,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Styled Text</title>
+
     
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Sigmar&display=swap" rel="stylesheet">
-    
-    <style>
-        .sigmar-regular {
-            font-family: "Sigmar", serif;
-            font-weight: 400;
-            font-style: normal;
-        }
-    </style>
-</head>
-<body>
 
-    <?php
-        // Define text in PHP
-        $text = "This text will have the Sigmar font.";
-    ?>
+        
 
-    <!-- Apply the font to this text only -->
-    <p class="sigmar-regular"><?php echo htmlspecialchars($text); ?></p>
-
-</body>
-</html>
 
 
 
@@ -215,6 +195,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
 
 <h1 class="text-center my-5">About us</h1>
+
+<p class="text-center my-5"> We are a cat cafe who welcome everybody to meet our little furry friends</p>
 
 <!-- Cat Listing Section -->
 <h1 class="text-center my-5">Meet our Cats</h1>
@@ -320,12 +302,19 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </form>
 </div>
 
+
+
+
+
+
 <!-- Footer -->
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<iframe width="781" height="506" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" id="gmap_canvas" src="https://maps.google.com/maps?width=781&amp;height=506&amp;hl=en&amp;q=Grove%20Park%20Rd,%20Wrexham%20LL12%207AB%20Wrexham+()&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe> <a href='https://mapswebsite.net/'>google maps html widget</a> <script type='text/javascript' src='https://embedmaps.com/google-maps-authorization/script.js?id=5c5171098e8f4458546c4a578830b560dc0da13c'></script>
 
 </body>
 </html>

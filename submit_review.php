@@ -17,23 +17,8 @@ if (isset($_SESSION['user_id']) && isset($_POST['product_id']) && isset($_POST['
         exit;
     }
 
-    // Fetch the user's profile picture
-    $user_query = "SELECT profile_pic FROM user WHERE user_id = ?";
-    $stmt = $conn->prepare($user_query);
-    if (!$stmt) {
-        die("Prepared statement failed: " . $conn->error);
-    }
-    
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $user_result = $stmt->get_result();
-    
-    if ($user_result->num_rows > 0) {
-        $user = $user_result->fetch_assoc();
-        $profile_pic = $user['profile_pic'] ? 'images/profiles/' . $user['profile_pic'] : 'images/profiles/default.png';
-    } else {
-        $profile_pic = 'images/profiles/default.png';
-    }
+  
+
 
     // Insert the review into the database
     $query = "INSERT INTO reviews (product_id, user_id, rating, review_text) 
