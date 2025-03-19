@@ -1,3 +1,5 @@
+<!-- code for detecting an error and displaying an error message  -->
+ 
 <!DOCTYPE html>
 <html lang="en">
 <head>

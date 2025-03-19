@@ -1,3 +1,5 @@
+<!-- code for button to submit a review on product detail page -->
+
 <?php
 session_start();
 require_once('db.php');

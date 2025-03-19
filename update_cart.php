@@ -1,3 +1,5 @@
+<!-- if added a new product this code will update the cart -->
+
 <?php
 session_start();
 

@@ -1,3 +1,4 @@
+<!-- Dashboard of the user once the individual is logged in, and allows them to upload an image for their profile picture -->
 
 <?php
 session_start();

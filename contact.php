@@ -1,3 +1,5 @@
+<!-- contact page maintaining information about how to contact the cat cafe -->
+
 <?php
 // Start session and include necessary files
 session_start();

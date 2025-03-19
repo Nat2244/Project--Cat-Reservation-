@@ -1,3 +1,5 @@
+<!-- main index page code, other known as home page which displays the cats, products, and reservation where the user can submit the reservation -->
+
 <?php
 // Start session and include necessary files
 session_start();

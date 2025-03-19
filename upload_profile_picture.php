@@ -1,3 +1,5 @@
+<!-- uploading images from user for their profile picture icon only when the user is logged in -->
+
 <?php
 session_start();
 require_once('db.php'); // Assuming db.php contains your database connection setup

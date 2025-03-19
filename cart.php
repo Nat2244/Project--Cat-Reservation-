@@ -1,3 +1,5 @@
+<!-- the actual users cart including the products -->
+
 <?php
 session_start();
 require_once('db.php');

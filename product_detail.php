@@ -1,3 +1,4 @@
+<!-- details about the product, cost, title, image, as well as displaying reviews from the database and also allowing user to input a review once they are logged in -->
 <?php
 // Include your database connection file
 include 'db.php';

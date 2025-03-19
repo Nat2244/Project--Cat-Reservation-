@@ -1,3 +1,4 @@
+<!-- code for registering a new user  -->
 <?php
 	require('db.php');
 		// If the values are posted, insert them into the database.

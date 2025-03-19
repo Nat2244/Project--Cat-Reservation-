@@ -1,3 +1,5 @@
+<!-- products from the menu displaying from the database  -->
+
 <?php
 // Start session and include necessary files
 session_start();

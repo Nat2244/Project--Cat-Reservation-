@@ -1,3 +1,5 @@
+<!-- details of the cats displayed on the home page, when the cat is clicked on this code will run fetching the details about the selected cat -->
+
 <?php
 include 'db.php'; // Include your database connection
 

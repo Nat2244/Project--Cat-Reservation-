@@ -1,3 +1,5 @@
+<!-- Code for the title of website other known as header -->
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -7,7 +9,7 @@
 		<meta name="keywords" content="put, keywords, here" />
 		<meta name="robots" content="noindex" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-		<title>PHP-MySQL Website from Scratch</title>	
+		<title>Cat Cafe</title>	
 		
 		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >

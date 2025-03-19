@@ -1,3 +1,4 @@
+<!-- code for removing products from the cart -->
 <?php
 session_start();
 require_once('db.php');

@@ -1,3 +1,4 @@
+<!-- code for user logging in, fetching data from the database about the user enabling them to log into their account -->
 <?php
 include 'header.php';
 session_start();

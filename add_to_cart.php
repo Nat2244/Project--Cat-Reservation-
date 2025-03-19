@@ -1,3 +1,5 @@
+<!-- this code runs the function of adding the product to a cart button once the user is logged in.  -->
+
 <?php
 session_start();
 require_once('db.php');

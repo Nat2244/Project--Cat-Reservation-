@@ -1,3 +1,5 @@
+<!-- Confirmation page for reservation with a thank you message, and inputting it into a database -->
+
 <?php
 // Start session and include necessary files
 session_start();
